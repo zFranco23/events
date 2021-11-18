@@ -14,7 +14,7 @@ export const eventStartAddNew = (event) => {
             const res = await requestAPI('/events', event , { 'x-token' : token }, 'POST');
 
             if(res?.ok){
-                event.id = res.event.eid;
+                event.eid = res.event.eid;
                 event.user = {
                     _id : uid,
                     name
