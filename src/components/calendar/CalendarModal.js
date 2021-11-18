@@ -7,7 +7,7 @@ import moment from 'moment';
 import Swal from 'sweetalert2';
 
 import { uiCloseModal } from '../../redux/actions/ui';
-import { eventAddNew, eventClearActiveEvent, eventUpdated } from '../../redux/actions/calendar';
+import { eventStartAddNew, eventClearActiveEvent, eventStartUpdated } from '../../redux/actions/calendar';
 // import { getInitialState } from '../../helpers/getInitialState';
 
 const customStyles = {
@@ -48,7 +48,6 @@ const CalendarModal = () => {
     const [eventDetails, setEventDetails] = useState( initState);
     
     const { title , notes , start , end }  = eventDetails;
-
 
     useEffect(()=>{
 
@@ -118,17 +117,10 @@ const CalendarModal = () => {
 
 
         if(activeEvent){
-            dispatch( eventUpdated(eventDetails) )
+            dispatch( eventStartUpdated(eventDetails) )
         }else{
 
-            dispatch( eventAddNew({
-                ...eventDetails,
-                id : new Date().getTime(),
-                user : {
-                    _id : '123',
-                    name : 'Franco'
-                }
-            }));
+            dispatch( eventStartAddNew(eventDetails));
         }
 
         setTitleValid(true);
@@ -160,7 +152,7 @@ const CalendarModal = () => {
                         <label>Fecha y hora inicio</label>
                         <DateTimePicker
                             onChange={ handleStartDateChange }
-                            value={ dateStart }
+                            value={ activeEvent ? start : dateStart }
                             className="form-control"
                         />
                     </div>
@@ -169,7 +161,7 @@ const CalendarModal = () => {
                         <label>Fecha y hora fin</label>
                         <DateTimePicker
                             onChange={ handleEndDateChange }
-                            value={ dateEnd }
+                            value={ activeEvent ? end : dateEnd }
                             minDate = { dateStart}
                             className="form-control"
                         />

@@ -11,7 +11,7 @@ import CalendarEvent from './CalendarEvent'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import CalendarModal from './CalendarModal'
 import { uiOpenModal } from '../../redux/actions/ui'
-import { eventClearActiveEvent, eventSetActive} from '../../redux/actions/calendar'
+import { eventClearActiveEvent, eventSetActive, eventStartLoading} from '../../redux/actions/calendar'
 import AddNewFab from '../ui/AddNewFab'
 import DeleteEventFab from '../ui/DeleteEventFab'
 
@@ -47,18 +47,20 @@ const localizer = momentLocalizer(moment)
 
 // ]
 const CalendarScreen = () => {
-
-
-    const { events , activeEvent } = useSelector(state => state.calendar);
+    
     const dispatch = useDispatch();
+    const { uid  } = useSelector( state => state.auth);
+    const { events , activeEvent } = useSelector(state => state.calendar);
     const [ view , setView ] = useState(
         localStorage.getItem('lastView') || 'month'
     )
     //Se realiza por cada evento
     const evetStyleGetter = (event , start ,end ,isSelected) => {
         //Style a retornar
+
+        //Esto se ejecuta uno por uno
         const style = {
-            backgroundColor : '#367CF7',
+            backgroundColor : uid === event.user._id ?  '#367CF7' : '#465660',
             borderRadius : '0px',
             opacity : 0.8,
             display : 'block',
@@ -106,6 +108,11 @@ const CalendarScreen = () => {
             // dispatch ( uiOpenModal() );
         }
     }
+
+
+    useEffect(() => {
+        dispatch( eventStartLoading());
+    },[dispatch])
 
     useEffect(() => {
         localStorage.setItem('lastView',view);

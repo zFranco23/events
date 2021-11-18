@@ -15,9 +15,15 @@ export const requestAPI = async ( url = '' , body= { } , headers={} , method = '
         case 'POST':
             response = await axiosInstance.post(url, body , { headers});
             break;
+        case 'PUT':
+            response = await axiosInstance.put(url, body , { headers });
+            break;
+        case 'DELETE':
+            response = await axiosInstance.delete(url, { headers });
+            break;
         //AÑADIR MAS
         default://EL GET
-            response = await axiosInstance.get(url,headers);
+            response = await axiosInstance.get(url,{ headers });
             break;
     }
 
