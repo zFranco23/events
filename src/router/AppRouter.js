@@ -10,6 +10,7 @@ import {
 
 import LoginScreen from '../components/auth/LoginScreen'
 import CalendarScreen from '../components/calendar/CalendarScreen'
+import LoaderComponent from '../components/ui/Loader';
 
 import { startChecking } from '../redux/actions/auth'
 import PrivateRoute from './PrivateRoute'
@@ -18,10 +19,15 @@ import PublicRoute from './PublicRoute'
 const AppRouter = () => {
 
     const dispatch = useDispatch();
-    const { uid } = useSelector(state => state.auth);
+    const { uid, loading } = useSelector(state => state.auth);
+
     useEffect(() => {
         dispatch ( startChecking());
     },[dispatch])
+
+    if(loading){
+        return <LoaderComponent />
+    }
 
     return (
         <Router>

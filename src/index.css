@@ -87,3 +87,10 @@ html, body{
     left: 2.5rem;
     z-index:10;
 }
+
+.container__loader{
+    height:100vh;
+    display :flex;
+    justify-content:  center;
+    align-items: center;
+}
